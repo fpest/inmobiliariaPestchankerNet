@@ -1,0 +1,101 @@
+@model inmobiliariaPestchanker.Models.Inmueble
+
+@{
+    ViewData["Title"] = "Nuevo Inmueble";
+    var Propietario = (IList<Propietario>)ViewBag.Propietario;
+    var tipoinmueble = (IList<TipoInmueble>)ViewBag.TipoInmueble;
+}
+
+
+<h1>Nuevo Inmueble</h1>
+
+<h4>Inmueble</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                   
+     <div class="form-group">
+                <label class="control-label">Propietario</label>
+                    <select class="form-control" name="IdPropietario">
+                        @foreach (var item in Propietario)
+                            {
+                        @:<option value="@item.Id"> @(item.Apellido + ", " + item.Nombre)</option>
+                            }
+                    </select>
+                <span asp-validation-for="IdPropietario" class="text-danger"></span>
+            </div>
+
+
+
+
+
+            <div class="form-group">
+                <label asp-for="Direccion" class="control-label"></label>
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoordenadaN" class="control-label"></label>
+                <input asp-for="CoordenadaN" class="form-control" />
+                <span asp-validation-for="CoordenadaN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoordenadaE" class="control-label"></label>
+                <input asp-for="CoordenadaE" class="form-control" />
+                <span asp-validation-for="CoordenadaE" class="text-danger"></span>
+            </div>
+       
+            <div class="form-group">
+                <label class="control-label">Tipo de Inmueble</label>
+                    <select class="form-control" name="IdTipoInmueble">
+                        @foreach (var tipo in tipoinmueble)
+                            {
+                        @:<option value="@tipo.Id"> @(tipo.Descripcion)</option>
+                            }
+                    </select>
+                <span asp-validation-for="IdTipoInmueble" class="text-danger"></span>
+            </div>
+       
+       
+       
+       
+       
+            <div class="form-group">
+                <label asp-for="TipoUso" class="control-label"></label>
+                <input asp-for="TipoUso" class="form-control" />
+                <span asp-validation-for="TipoUso" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CantidadAmbientes" class="control-label"></label>
+                <input asp-for="CantidadAmbientes" class="form-control" />
+                <span asp-validation-for="CantidadAmbientes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrecioInmueble" class="control-label"></label>
+                <input asp-for="PrecioInmueble" class="form-control" />
+                <span asp-validation-for="PrecioInmueble" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Registrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="TipoInmuebles" asp-action="Create">Nuevo Tipo de Inmueble</a>
+    <br/>
+   <a asp-action="Index">Volver a Lista de Inmuebles</a>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

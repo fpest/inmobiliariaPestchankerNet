@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - inmobiliariaPestchanker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/inmobiliariaPestchanker.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Inmobiliaria</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Propietarios" asp-action="Index">Listar Propietarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Inquilinos" asp-action="Index">Listar Inquilinos</a>
+                        </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Inmuebles" asp-action="Index">Listar Inmuebles</a>
+                        </li>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Contratos" asp-action="Index">Listar Contratos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+
+<main role="main" class="container">
+		<div class="">
+			@if (ViewBag.Id != null)
+			{//alta exitosa
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+					<strong>¡Éxito!</strong> La entidad fue dada de alta con id: @ViewBag.Id
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+					</button>
+				</div>
+			}
+			else if (ViewBag.Mensaje != null)
+			{//cartel general
+				<div class="alert alert-info alert-dismissible fade show" role="alert">
+					<strong>Información:</strong> @ViewBag.Mensaje
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+					</button>
+				</div>
+			}
+			else if (ViewBag.Error != null)
+			{//alta exitosa
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong>¡Error!</strong> @ViewBag.Error
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+					</button>
+				</div>
+			}
+			else if (!String.IsNullOrWhiteSpace(ViewBag.Error))
+			{//ocurrió un error
+				<environment names="Development">
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>¡Error!</strong> Ocurrió: @ViewBag.Error
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+						</button>
+						<a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false"><span class="lnr lnr-plus-circle"></span></a>
+						<div class="collapse multi-collapse" id="multiCollapseExample1">
+							@ViewBag.StackTrace
+						</div>
+					</div>
+				</environment>
+			}
+			<div class="m-1 p-1">
+				@RenderBody()
+			</div>
+		</div>
+	</main>
+
+
+
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+
+
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - inmobiliariaPestchanker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

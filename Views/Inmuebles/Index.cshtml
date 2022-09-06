@@ -1,0 +1,65 @@
+@model IEnumerable<inmobiliariaPestchanker.Models.InmuebleLista>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Listado de Inmuebles</h1>
+
+<p>
+    <a asp-action="Create">Nuevo Inmueble</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+          
+           <th>
+                @Html.DisplayNameFor(model => model.Propietario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadAmbientes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioInmueble)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disponible)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                 
+            <td>
+                @Html.DisplayFor(modelItem => item.Propietario)
+            </td>
+        
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+        
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadAmbientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioInmueble)
+            </td>
+            <td>
+                @(item.Disponible?"SI":"NO")
+
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.Id}) |
+                @Html.ActionLink("Detalles", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Borrar", "Delete", new { id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
