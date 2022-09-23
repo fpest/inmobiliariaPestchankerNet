@@ -1,0 +1,76 @@
+@model IEnumerable<inmobiliariaPestchanker.Models.PagoLista>
+
+@{
+    ViewData["Title"] = "Index";
+     var idContratoBag = (Int32)ViewBag.IdContrato;
+}
+
+<h1>Listado de Pagos</h1>
+
+@if(Model.LongCount()> 0){
+<h5>Código Contrato: @Model.ElementAt(0).IdContrato</h5>
+<h5>Nombre Inquilino: @Model.ElementAt(0).InqApellido, @Model.ElementAt(0).InqNombre</h5>
+<h6>Nombre Propietario: @Model.ElementAt(0).PropApellido, @Model.ElementAt(0).PropNombre</h6>
+<h6>Direccion Propiedad: @Model.ElementAt(0).Direccion</h6>
+<h6>Precio: @Model.ElementAt(0).PrecioContrato</h6>
+<h6>Inicio Contrato: @Model.ElementAt(0).FechaInicioContrato.ToString().Substring(0,10)</h6>
+<h6>Fin Contrato: @Model.ElementAt(0).FechaFinContrato.ToString().Substring(0,10)</h6>
+
+}else{
+    <h1>No hay pagos realizados en este contrato.</h1>
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Importe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdContrato)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @item.FechaPago.ToString().Substring(0,10)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdContrato)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Borra", "Delete", new { id=item.Id })
+            </td>
+                
+
+        </tr>
+}
+
+<div>
+
+
+    @Html.ActionLink("Volver a Lista de Contratos", "Index", "Contratos")
+
+
+</div>
+
+
+    </tbody>
+</table>

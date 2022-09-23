@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using inmobiliariaPestchanker.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace inmobiliariaPestchanker.Controllers
 {
@@ -12,80 +10,28 @@ namespace inmobiliariaPestchanker.Controllers
     {
 
         private RepositorioPropietario repo = new RepositorioPropietario();
-        // GET: Propietarios
+
+
+ [Authorize]
         public ActionResult Index()
         {
-
                       try{
-    var lista = repo.ObtenerTodos();
+        var lista = repo.ObtenerTodos();
 
-     ViewBag.Mensaje = TempData["Mensaje"];
+         ViewBag.Mensaje = TempData["Mensaje"];
 
             return View(lista);
 
           }catch(Exception e){
-
-            throw;
+          throw;
           }
-
-        
         }
 
-        // GET: Propietarios/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
 
-                      try{
-  var entidad = repo.ObtenerPorId(id);
-            return View(entidad);
-
-          }catch(Exception e){
-
-            throw;
-          }
-           
-        }
-
-        // GET: Propietarios/Create
-        public ActionResult Create()
-        {
-
-          try{
- return View();
-
-          }catch(Exception e){
-
-            throw;
-          }
-
-           
-        }
-
-        // POST: Propietarios/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Propietario propietario)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-                repo.Alta(propietario);
-
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Propietarios/Edit/5
-        public ActionResult Edit(int id)
-        {
-
-          try{
-
+        try{
             var entidad = repo.ObtenerPorId(id);
             return View(entidad);
 
@@ -93,13 +39,54 @@ namespace inmobiliariaPestchanker.Controllers
 
             throw;
           }
-
-
+           
         }
 
-        // POST: Propietarios/Edit/5
+        [Authorize]
+
+        public ActionResult Create()
+        {
+          try{
+           return View();
+
+          }catch(Exception e){
+            throw;
+          }
+        }
+
+        // POST: Propietarios/Create
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Create(Propietario propietario)
+        {
+            try
+            {
+                repo.Alta(propietario);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+          try{
+            var entidad = repo.ObtenerPorId(id);
+            return View(entidad);
+
+          }catch(Exception e){
+
+            throw;
+          }
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Propietario propietario)
         {
             Propietario p = null;
@@ -122,7 +109,7 @@ namespace inmobiliariaPestchanker.Controllers
             }
         }
 
-        // GET: Propietarios/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             var entidad = repo.ObtenerPorId(id);
@@ -132,11 +119,12 @@ namespace inmobiliariaPestchanker.Controllers
         // POST: Propietarios/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+  
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id, Propietario propietario)
         {
             try
             {
-                // TODO: Add delete logic here
                 repo.Baja(id);
 
                 return RedirectToAction(nameof(Index));

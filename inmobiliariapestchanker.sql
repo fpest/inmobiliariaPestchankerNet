@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-09-2022 a las 22:47:58
+-- Tiempo de generación: 23-09-2022 a las 03:29:45
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.1
 
@@ -107,6 +107,13 @@ CREATE TABLE `pago` (
   `IdContrato` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `pago`
+--
+
+INSERT INTO `pago` (`Id`, `FechaPago`, `Importe`, `IdContrato`) VALUES
+(6, '2022-09-16', '300', 6);
+
 -- --------------------------------------------------------
 
 --
@@ -130,6 +137,25 @@ INSERT INTO `propietario` (`Id`, `Nombre`, `Apellido`, `Dni`, `Telefono`, `Email
 (5, 'Juan Ignacio', 'Lopez', '2222222', '2222222', 'juan@gmail.com'),
 (8, 'Ramiro', 'Fernandez', '8989898', '9898989', 'ramiro@gmail.com'),
 (9, 'Gerardo', 'Perez', '2222222', '2222222', 'gerardo@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `Id` int(11) NOT NULL,
+  `Descripcion` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`Id`, `Descripcion`) VALUES
+(1, 'Administrador'),
+(7, 'Empleado');
 
 -- --------------------------------------------------------
 
@@ -162,8 +188,20 @@ CREATE TABLE `usuario` (
   `Apellido` varchar(50) NOT NULL,
   `Dni` varchar(30) NOT NULL,
   `Email` varchar(100) NOT NULL,
-  `Clave` varchar(10) NOT NULL
+  `Clave` varchar(100) NOT NULL,
+  `Avatar` varchar(300) DEFAULT NULL,
+  `IdRol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`Id`, `Nombre`, `Apellido`, `Dni`, `Email`, `Clave`, `Avatar`, `IdRol`) VALUES
+(32, 'Federico', 'Pestchanker', '111111', 'fede@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_32.png', 1),
+(37, 'Teresa O', 'Fernandez', '18191819', 'tere@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_37.png', 7),
+(39, 'Nacho', 'Perez', '333', 'nacho@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_39.png', 7),
+(40, 'Ramiro', 'Perez', '393939', 'ramiro@gmail.com', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar.png', 1);
 
 --
 -- Índices para tablas volcadas
@@ -205,6 +243,12 @@ ALTER TABLE `propietario`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indices de la tabla `tipoinmueble`
 --
 ALTER TABLE `tipoinmueble`
@@ -214,7 +258,8 @@ ALTER TABLE `tipoinmueble`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `IdRol` (`IdRol`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -242,13 +287,19 @@ ALTER TABLE `inquilino`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
 --
 ALTER TABLE `propietario`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `tipoinmueble`
@@ -260,7 +311,7 @@ ALTER TABLE `tipoinmueble`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Restricciones para tablas volcadas
@@ -285,6 +336,12 @@ ALTER TABLE `inmueble`
 --
 ALTER TABLE `pago`
   ADD CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`IdContrato`) REFERENCES `contrato` (`Id`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`IdRol`) REFERENCES `rol` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

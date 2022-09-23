@@ -1,81 +1,62 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using inmobiliariaPestchanker.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+
 namespace inmobiliariaPestchanker.Controllers
 {
 
   
 public class InquilinosController : Controller
     {
-
         private RepositorioInquilino repo = new RepositorioInquilino();  
         // GET: Inquilinos
+
+ [Authorize]
         public ActionResult Index()
         {
-
-
           try{
             var lista = repo.ObtenerTodos();
             ViewBag.Mensaje = TempData["Mensaje"];
             return View(lista);
 
           }catch(Exception e){
-
             throw;
           }
-
-           
         }
 
-        // GET: Inquilinos/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
           try{
-
               var entidad = repo.ObtenerPorId(id);
             return View(entidad);
-
           }catch(Exception e){
-
             throw;
           }
-
-
-
         }
 
-        // GET: Inquilinos/Create
+        [Authorize]
         public ActionResult Create()
         {
-
           try{
- return View();
+           return View();
 
           }catch(Exception e){
-
             throw;
           }
-
-
-           
         }
 
-        // POST: Inquilinos/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+
+        [Authorize]
         public ActionResult Create(Inquilino inquilino)
         {
             try
             {
-                // TODO: Add insert logic here
-
                 repo.Alta(inquilino);
-
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -84,24 +65,22 @@ public class InquilinosController : Controller
             }
         }
 
-        // GET: Inquilinos/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
-
                       try{
 
-    var entidad = repo.ObtenerPorId(id);
+            var entidad = repo.ObtenerPorId(id);
             return View(entidad);
-       
-          }catch(Exception e){
-
+        }catch(Exception e){
             throw;
-          }
+        }
             }
 
-        // POST: Inquilinos/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+
+        [Authorize]
         public ActionResult Edit(int id, Inquilino inquilino)
         {
             Inquilino i = null;
@@ -123,7 +102,7 @@ public class InquilinosController : Controller
             }
         }
 
-        // GET: Inquilinos/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
             try{
@@ -136,9 +115,9 @@ public class InquilinosController : Controller
             
         }
 
-        // POST: Inquilinos/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id, Inquilino inquilino)
         {
             try
@@ -150,14 +129,7 @@ public class InquilinosController : Controller
             {
                 TempData["Mensaje"] = "No se pudo Borrar el Registro";
                 return RedirectToAction(nameof(Index));
-                //  return View();
             }
         }
- 
- 
- 
     }
-
-
-
 }

@@ -8,24 +8,31 @@ namespace inmobiliariaPestchanker.Controllers
 {
 
 
-    public class ContratosController : Controller
+    public class PagosController : Controller
 
     {
 
 
-        private RepositorioContrato repo = new RepositorioContrato();
+        
+        private RepositorioPago repo = new RepositorioPago();
+        
+        private RepositorioContrato repoContrato = new RepositorioContrato();
         private RepositorioInmueble repoInmueble = new RepositorioInmueble();
         private RepositorioInquilino repoInquilino = new RepositorioInquilino();
-
-
  [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int idContrato)
         {
              try{
-                var lista = repo.ObtenerTodos();
-                 ViewBag.Mensaje = TempData["Mensaje"];
-
+                var lista = repo.ObtenerPorContrato(idContrato);
+              
+              ViewBag.IdContrato = idContrato;
+                 if(TempData.ContainsKey("Mensaje"))
+                ViewBag.Mensaje = TempData["Mensaje"];
+                if(TempData.ContainsKey("Error"))
+                ViewBag.Mensaje = TempData["Error"];
+  
                 return View(lista);
+               
             }
             catch(Exception e)
             {
@@ -47,18 +54,13 @@ namespace inmobiliariaPestchanker.Controllers
             }        }
 
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(int idContrato)
         {
           try{
-                ViewBag.Inmueble = repoInmueble.ObtenerTodos();
-                ViewBag.Inquilino = repoInquilino.ObtenerTodos();
-               
-                if(TempData.ContainsKey("Mensaje"))
-                ViewBag.Mensaje = TempData["Mensaje"];
-                if(TempData.ContainsKey("Error"))
-                ViewBag.Mensaje = TempData["Error"];
-           
-            return View();
+                   var lista = repo.ObtenerInfoPorContrato(idContrato);
+                 ViewBag.Mensaje = TempData["Mensaje"];
+
+                return View(lista);
 
           }catch(Exception e){
 
@@ -71,12 +73,12 @@ namespace inmobiliariaPestchanker.Controllers
         //[ValidateAntiForgeryToken]
         
         [Authorize]
-        public ActionResult Create(Contrato contrato)
+        public ActionResult Create(Pago pago)
         {
             try
             {
-              repo.Alta(contrato);
-              return RedirectToAction(nameof(Index));
+              repo.Alta(pago);
+                return RedirectToAction("Index", "Contratos"); 
             }
             catch(Exception e)
             {
@@ -84,15 +86,15 @@ namespace inmobiliariaPestchanker.Controllers
             }
         }
 
-        [Authorize]
+        //Sólo el administrador puede Editar un pago(me parece que seria mejor asi) 
+         [Authorize(Policy = "Administrador")]
         public ActionResult Edit(int id)
+
+        
         {
         try{
               var entidad = repo.ObtenerPorId(id);
-              ViewBag.Inmueble = repoInmueble.ObtenerTodos();
-              ViewBag.Inquilino = repoInquilino.ObtenerTodos();
-               
-               if(TempData.ContainsKey("Mensaje"))
+              if(TempData.ContainsKey("Mensaje"))
                ViewBag.Mensaje = TempData["Mensaje"];
                if(TempData.ContainsKey("Error"))
                ViewBag.Mensaje = TempData["Error"];
@@ -109,25 +111,23 @@ namespace inmobiliariaPestchanker.Controllers
         [HttpPost]
         //[ValidateAntiForgeryToken]
         
-        [Authorize]
-        public ActionResult Edit(int id, Contrato contrato)
+        //Sólo el administrador puede Editar un pago(me parece que seria mejor asi) 
+         [Authorize(Policy = "Administrador")]
+        public ActionResult Edit(int id, PagoLista pagoLista)
         {
-            Contrato i = null;
+            PagoLista i = null;
             try
             {
                 i = repo.ObtenerPorId(id);
-                i.IdInmueble = contrato.IdInmueble;
-                i.IdInquilino = contrato.IdInquilino;
-                i.FechaInicio = contrato.FechaInicio;
-                i.FechaFin = contrato.FechaFin;
-                i.Precio = contrato.Precio;
+                i.FechaPago = pagoLista.FechaPago;
+                i.Importe = pagoLista.Importe;
                 repo.Modificacion(i);
                 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { IdContrato = pagoLista.IdContrato});
             }
             catch
             {
-                return View();
+                throw;
             }
         }
 
@@ -136,13 +136,8 @@ namespace inmobiliariaPestchanker.Controllers
         {
           try{
             var entidad = repo.ObtenerPorId(id);
-             ViewBag.Inmueble = repoInmueble.ObtenerPorId(entidad.IdInmueble);
-             ViewBag.Inquilino = repoInquilino.ObtenerPorId(entidad.IdInquilino);
-                
-               if(TempData.ContainsKey("Mensaje"))
-               ViewBag.Mensaje = TempData["Mensaje"];
-               if(TempData.ContainsKey("Error"))
-               ViewBag.Mensaje = TempData["Error"];
+           
+              
             return View(entidad);
           }catch(Exception e){
 
@@ -150,25 +145,24 @@ namespace inmobiliariaPestchanker.Controllers
           }
         }
 
-
         // POST: Inquilinos/Delete/5
         [HttpPost]
         //[ValidateAntiForgeryToken]
 
         [Authorize(Policy = "Administrador")]
-        public ActionResult Delete(int id, Contrato contrato)
+        public ActionResult Delete(int id, PagoLista pagolista)
         {
             try
             {
                repo.Baja(id);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Contratos");
+            
             }
             catch
             {
                     TempData["Mensaje"] = "No se pudo Borrar el Registro";
                 return RedirectToAction(nameof(Index));
-                return View();
             }
         }
     }

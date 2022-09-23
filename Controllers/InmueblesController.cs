@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using inmobiliariaPestchanker.Models;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace inmobiliariaPestchanker.Controllers
@@ -16,14 +13,13 @@ namespace inmobiliariaPestchanker.Controllers
        private RepositorioInmueble repo = new RepositorioInmueble();
        private RepositorioPropietario repoPro = new RepositorioPropietario();
        private RepositorioTipoInmueble repoTipoInmueble = new RepositorioTipoInmueble();
-        public IActionResult Index()
+ [Authorize]
+       public IActionResult Index()
         {
             try{
                 var lista = repo.ObtenerTodosLista();
                  ViewBag.Mensaje = TempData["Mensaje"];
             return View(lista);
-
-             
             }
             catch(Exception ex)
             {
@@ -32,12 +28,11 @@ namespace inmobiliariaPestchanker.Controllers
             
         }
     
-        // GET: Inmueble/Details
+        [Authorize]
         public ActionResult Details(int id)
         {
-        
                   try{
- var entidad = repo.ObtenerPorId(id);
+              var entidad = repo.ObtenerPorId(id);
               ViewBag.TipoInmueble = repoTipoInmueble.ObtenerPorId(entidad.IdTipoInmueble);
                
                if(TempData.ContainsKey("Mensaje"))
@@ -45,51 +40,38 @@ namespace inmobiliariaPestchanker.Controllers
                if(TempData.ContainsKey("Error"))
                ViewBag.Mensaje = TempData["Error"];
             return View(entidad);
-
           }catch(Exception e){
-
             throw;
           }
-
-
-           
         }
 
-        // GET: Inmueble/Create
+        [Authorize]
         public ActionResult Create()
         {
-
                       try{
 
-           ViewBag.Propietario = repoPro.ObtenerTodos();
+               ViewBag.Propietario = repoPro.ObtenerTodos();
                ViewBag.TipoInmueble = repoTipoInmueble.ObtenerTodos();
-               
+              
                if(TempData.ContainsKey("Mensaje"))
                ViewBag.Mensaje = TempData["Mensaje"];
                if(TempData.ContainsKey("Error"))
                ViewBag.Mensaje = TempData["Error"];
            
-            return View();
+               return View();
           }catch(Exception e){
-
             throw;
           }
-           
-    
         }
 
-        // POST: Inmueble/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Inmueble inmueble)
         {
             try
             {
-                // TODO: Add insert logic here
-
                 repo.Alta(inmueble);
-
-
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -98,11 +80,10 @@ namespace inmobiliariaPestchanker.Controllers
             }
         }
 
-        // GET: Inmueble/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
-
-                      try{
+               try{
                 var entidad = repo.ObtenerPorId(id);
                ViewBag.Propietario = repoPro.ObtenerTodos();
                ViewBag.TipoInmueble = repoTipoInmueble.ObtenerTodos();
@@ -111,22 +92,15 @@ namespace inmobiliariaPestchanker.Controllers
                ViewBag.Mensaje = TempData["Mensaje"];
                if(TempData.ContainsKey("Error"))
                ViewBag.Mensaje = TempData["Error"];
-               
-
-
-
             return View(entidad);
-
-
-          }catch(Exception e){
-
+           }catch(Exception e){
             throw;
           }
                    }
 
-        // POST: Inmueble/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Inmueble inmueble)
         {
             Inmueble i = null;
@@ -143,10 +117,7 @@ namespace inmobiliariaPestchanker.Controllers
                 i.PrecioInmueble = inmueble.PrecioInmueble;
                 i.Disponible = inmueble.Disponible;
             
-
-
                 repo.Modificacion(i);
-                
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -155,10 +126,9 @@ namespace inmobiliariaPestchanker.Controllers
             }
         }
 
-        // GET: Inmueble/Delete/5
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id)
         {
-
           try{
             var entidad = repo.ObtenerPorId(id);
              ViewBag.TipoInmueble = repoTipoInmueble.ObtenerPorId(entidad.IdTipoInmueble);
@@ -168,21 +138,16 @@ namespace inmobiliariaPestchanker.Controllers
                if(TempData.ContainsKey("Error"))
                ViewBag.Mensaje = TempData["Error"];
             return View(entidad);
-
-
           }catch(Exception e){
-
             throw;
           }
-
-
-
-
         }
 
         // POST: Inmueble/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+
+        [Authorize(Policy = "Administrador")]
         public ActionResult Delete(int id, Inmueble inmueble)
         {
             try
