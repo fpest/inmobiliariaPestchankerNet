@@ -56,7 +56,11 @@
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Borra", "Delete", new { id=item.Id })
+                @Html.ActionLink("Borra", "Delete", new { id=item.Id }) |
+                @Html.ActionLink("Pagar", "Create", "Pagos", new  { idContrato=item.IdContrato}) |
+                
+               
+
             </td>
                 
 

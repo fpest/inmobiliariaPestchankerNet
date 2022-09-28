@@ -21,12 +21,12 @@ namespace inmobiliariaPestchanker.Models
 		public string Email { get; set; }
 		[Required]
 		public string Clave { get; set; }
-		[Required]
+		
 		// URL a la foto es Avatar
-		public string Avatar { get; set; }
+		public string? Avatar { get; set; }
 		
 		// acá viene el archivo en AvatarFile
-		public IFormFile AvatarFile { get; set; }
+		public IFormFile? AvatarFile { get; set; }
 
 		[Required]
 		public int IdRol { get; set; }

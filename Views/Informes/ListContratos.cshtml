@@ -1,0 +1,69 @@
+@model IEnumerable<inmobiliariaPestchanker.Models.InformeContratos>
+
+@{
+    ViewData["Title"] = "ListContratos";
+}
+
+<h1>List Contratos</h1>
+
+<p>
+    <a asp-action="Index">Volver</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Código Contrato
+            </th>
+            <th>
+                Inquilino
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                Fecha Inicio
+            </th>
+            <th>
+                Fecha Fin
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                Propietario
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdContrato)
+            </td>
+            <td>
+                  @(item.ApellidoInquilino + ", " + item.NombreInquilino)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @(item.FechaInicio.ToString().Substring(0,10))
+            </td>
+            <td>
+                @(item.FechaFin.ToString().Substring(0,10))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @(item.ApellidoPropietario + ", " + item.NombrePropietario)
+            </td>
+         
+
+
+        </tr>
+}
+    </tbody>
+</table>

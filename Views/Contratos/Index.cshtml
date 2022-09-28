@@ -59,7 +59,9 @@
                 @Html.ActionLink("Detalles", "Details", new  { id=item.Id}) |
                 @Html.ActionLink("Borrar", "Delete", new  { id=item.Id}) |
                 @Html.ActionLink("Pagos", "Index", "Pagos", new  { idContrato=item.Id}) |
-                @Html.ActionLink("Pagar", "Create", "Pagos", new  { idContrato=item.Id})
+                @Html.ActionLink("Pagar", "Create", "Pagos", new  { idContrato=item.Id}) |
+                @Html.ActionLink("Terminar", "Terminar", new  { id=item.Id}) |
+                @Html.ActionLink("Renovar", "Renovar", new  { id=item.Id})
                 
                 </td>
         </tr>

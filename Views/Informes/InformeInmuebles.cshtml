@@ -1,0 +1,84 @@
+@model inmobiliariaPestchanker.Models.FiltrarInmuebles
+
+@{
+    ViewData["Title"] = "FiltrarInmuebles";
+    var InformeLista = (IList<InformeInmuebles>)ViewBag.InformeLista;
+}
+
+<h1>FiltrarInmuebles</h1>
+
+<h4>Seleccionar</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="FiltrarInmuebles">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Disponibles" class="control-label"></label>
+                
+
+                    <select class="form-control" name="Disponibles">
+                        <option value="Todos">Todos</option>
+                        <option value="Disponibles">Disponibles</option>
+                        <option value="NoDisponibles">No Disponible</option>
+                    </select>
+
+
+
+
+                <span asp-validation-for="Disponibles" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPropietario" class="control-label"></label>
+                
+
+                    <select class="form-control" name="IdPropietario">
+                        <option value=-1>Todos</option>
+                        @foreach (var item in InformeLista)
+                            {
+                        @:<option value="@item.Duenio.Id"> @(item.Duenio.Apellido + ", " +item.Duenio.Nombre )</option>
+                            }
+                    </select>
+
+
+
+                <span asp-validation-for="IdPropietario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ocupados" class="control-label"></label>
+                
+                    <select class="form-control" name="Ocupados">
+                        <option value="Todos">Todos</option>
+                        <option value="Ocupado">Ocupados</option>
+                        <option value="Desocupado">Desocupados</option>
+                    </select>
+
+
+
+
+                <span asp-validation-for="Ocupados" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Listar Selección" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+
+
+
+
+
+
+
+

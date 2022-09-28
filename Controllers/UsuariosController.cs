@@ -105,8 +105,11 @@ public class UsuariosController : Controller
 
         public ActionResult Create(Usuario usuario)
               {
-         //  if (!ModelState.IsValid)
-         //      return View();
+           if (!ModelState.IsValid){
+            
+             ViewBag.Rol = repoRol.ObtenerTodos();
+               return View();
+           }
           try
             {
 

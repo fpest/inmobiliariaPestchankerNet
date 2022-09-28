@@ -16,8 +16,76 @@ namespace inmobiliariaPestchanker.Models;
 
 		}
 
+		public Boolean inmuebleAlquilado(DateTime FechaInicial, DateTime FechaFinal, int idInmueble){
+			Contrato i = null;
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			
+			{
+				string sql = @"SELECT cont.Id, IdInmueble, IdInquilino, FechaInicio,
+				 FechaFin, Precio, inq.Apellido, inq.Nombre, inm.Direccion 
+				 FROM contrato cont
+				 join inmueble inm on cont.IdInmueble = inm.Id
+				 join inquilino inq on cont.IdInquilino = inq.Id 
+				 WHERE inm.Id=@id";
+				
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+                    command.Parameters.Add("@id", MySqlDbType.Int32).Value = idInmueble;
+                    command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						i = new Contrato
+						{
+							Id = reader.GetInt32(0),
+							IdInmueble = reader.GetInt32(1),
+							IdInquilino = reader.GetInt32(2),
+							FechaInicio = reader.GetDateTime(3),						
+							FechaFin = reader.GetDateTime(4),
+							Precio = reader.GetDecimal(5),
+							Inquilino = new Inquilino{
+								Id = reader.GetInt32(2),
+								Nombre = reader.GetString(7),
+								Apellido = reader.GetString(6),
+							},
+							Inmueble = new Inmueble{
+								Id = reader.GetInt32(1),
+								Direccion = reader.GetString(8),
+							},
+							
+						};
+
+
+						if (!(FechaInicial > i.FechaFin || FechaFinal < i.FechaInicio))
+						{
+							connection.Close();
+							return true;
+						}
+
+
+					};
+
+					
+					connection.Close();
+					return false;
+				
+				}
+			}
+		}
+		public String obtenerDiaActual(){
+				DateTime hoy = DateTime.Today;
+				string diaActual = hoy.ToString("yyyy-MM-dd");
+				return diaActual; 
+		}
+		
 		public int Alta(Contrato i)
 		{
+
+
+			
+			
+
 			int res = -1;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
@@ -41,7 +109,15 @@ namespace inmobiliariaPestchanker.Models;
 				}
 			}
 			return res;
-		}
+
+
+			
+
+				
+			}
+
+
+		
 
 		
 		public int Baja(int id)

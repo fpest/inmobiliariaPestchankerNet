@@ -182,6 +182,44 @@ namespace inmobiliariaPestchanker.Models;
 			return i;
 			}
 
+virtual public Decimal ObtenerMontoPagadoPorContrato(int idContrato)
+		{
+			
+		
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+
+					Decimal monto=0; 
+				string sql = @"SELECT Sum(Importe) 
+				 FROM pago pag
+				 join contrato cont on pag.IdContrato = cont.Id
+				 WHERE cont.Id=@idContrato";
+				
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+                    command.Parameters.Add("@idContrato", MySqlDbType.Int32).Value = idContrato;
+                    command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					if (reader.Read())
+					{
+							monto = reader.GetDecimal(0);
+					};
+					connection.Close();
+				}
+				return monto;
+			}
+			
+			}
+
+
+
+
+
+
+
+
+
 					virtual public PagoLista ObtenerInfoPorContrato(int idContrato)
 		{
 			PagoLista i = null;

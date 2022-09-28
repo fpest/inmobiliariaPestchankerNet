@@ -1,0 +1,60 @@
+@model IEnumerable<inmobiliariaPestchanker.Models.InformeInmuebles>
+
+@{
+    ViewData["Title"] = "List";
+    var filtrar = ViewBag.Filtro;
+}
+
+<h1>List</h1>
+<h4>@(filtrar.Ocupados)</h4>
+<div>
+    <a asp-action="Index">Volver</a>
+        </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Código Inmueble
+             </th>
+            <th>
+                Propietario
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                Precio
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disponible)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @(item.Duenio.Apellido + ", " + item.Duenio.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioInmueble)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disponible)
+            </td>
+           
+            
+        </tr>
+        
+}
+    </tbody>
+</table>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2022 a las 03:29:45
+-- Tiempo de generación: 28-09-2022 a las 03:31:31
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.1
 
@@ -41,8 +41,8 @@ CREATE TABLE `contrato` (
 --
 
 INSERT INTO `contrato` (`Id`, `IdInmueble`, `IdInquilino`, `FechaInicio`, `FechaFin`, `Precio`) VALUES
-(5, 7, 7, '2022-09-06', '2022-10-02', '9999'),
-(6, 5, 6, '2022-10-02', '2022-12-04', '8888');
+(6, 5, 6, '2022-08-31', '2022-12-04', '8888'),
+(19, 7, 7, '2023-02-07', '2023-03-05', '3');
 
 -- --------------------------------------------------------
 
@@ -112,7 +112,11 @@ CREATE TABLE `pago` (
 --
 
 INSERT INTO `pago` (`Id`, `FechaPago`, `Importe`, `IdContrato`) VALUES
-(6, '2022-09-16', '300', 6);
+(6, '2022-09-16', '300', 6),
+(7, '2022-09-27', '900', 6),
+(9, '2022-09-27', '5', 6),
+(10, '2022-09-27', '100', 19),
+(11, '2022-09-27', '200', 19);
 
 -- --------------------------------------------------------
 
@@ -201,7 +205,9 @@ INSERT INTO `usuario` (`Id`, `Nombre`, `Apellido`, `Dni`, `Email`, `Clave`, `Ava
 (32, 'Federico', 'Pestchanker', '111111', 'fede@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_32.png', 1),
 (37, 'Teresa O', 'Fernandez', '18191819', 'tere@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_37.png', 7),
 (39, 'Nacho', 'Perez', '333', 'nacho@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar_39.png', 7),
-(40, 'Ramiro', 'Perez', '393939', 'ramiro@gmail.com', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar.png', 1);
+(40, 'Ramiro', 'Perez', '393939', 'ramiro@gmail.com', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar.png', 1),
+(41, 'Fede', 'Pest', '2222222', 'nacho1@gmail', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar.png', 7),
+(42, 'Santiago', 'Pest', '2222222', 'qqq@qqq', 'GAKKw6Co5EiIGNiZC1OfQC6offL+e8CoEs3SX0LIrHA=', '/Uploads\\avatar.png', 1);
 
 --
 -- Índices para tablas volcadas
@@ -269,7 +275,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `contrato`
 --
 ALTER TABLE `contrato`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `inmueble`
@@ -287,7 +293,7 @@ ALTER TABLE `inquilino`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `propietario`
@@ -311,7 +317,7 @@ ALTER TABLE `tipoinmueble`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- Restricciones para tablas volcadas
