@@ -69,7 +69,7 @@ public IList<InformeContratos> ObtenerListaFiltradaContrato(FiltrarContrato filt
 					
 
 
-				sqlWhere = "Where ('"+ arreglarFecha(fechaDesde) + "' >= cont.FechaInicio  && '" + arreglarFecha(fechaDesde) + "' <= cont.FechaFin) || ('" + arreglarFecha(fechaHasta) +"' >= cont.FechaInicio && '" + arreglarFecha(fechaHasta) + "' <= cont.FechaFin)";
+				sqlWhere = "Where ('"+ arreglarFecha(fechaDesde) + "' >= cont.FechaInicio  && '" + arreglarFecha(fechaDesde) + "' <= cont.FechaFin) || ('" + arreglarFecha(fechaHasta) +"' >= cont.FechaInicio && '" + arreglarFecha(fechaHasta) + "' <= cont.FechaFin) || ('" + arreglarFecha(fechaDesde) +"' <= cont.FechaInicio && '" + arreglarFecha(fechaHasta) + "' >= cont.FechaFin)";
 					
 					//cont.FechaInicio < '" + filtrarContrato.FechaDesde + "' And " + "cont.FechaFin <  '" + filtrarContrato.FechaHasta + "'"; 
 			
